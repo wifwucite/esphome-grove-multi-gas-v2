@@ -2,15 +2,16 @@
 
 #include "esphome/core/log.h"
 
+// see https://wiki.seeedstudio.com/Grove-Multichannel-Gas-Sensor-V2
+// and https://github.com/Seeed-Studio/Seeed_Arduino_MultiGas
+
 #define GM_RESOLUTION 1023
 
 // commands / registers
 #define GM_102B 0x01
 #define GM_302B 0x03
-//#define GM_402B 0x04
 #define GM_502B 0x05
 #define GM_702B 0x07
-//#define GM_802B 0x08
 #define CHANGE_I2C_ADDR 0x55
 #define WARMING_UP 0xFE
 #define WARMING_DOWN  0xFF
@@ -36,6 +37,10 @@ void GroveMultiGasV2Component::dump_config() {
 
   LOG_I2C_DEVICE(this);
 
+  if (is_failed()) {
+    ESP_LOGCONFIG(TAG, "  Failed!");
+  }
+
   LOG_SENSOR("  ", "NO2", no2_sensor);
   LOG_SENSOR("  ", "C2H5OH", c2h5oh_sensor);
   LOG_SENSOR("  ", "VOC", voc_sensor);
@@ -47,6 +52,14 @@ void GroveMultiGasV2Component::update() {
   update_gas_sensor_value(c2h5oh_sensor, GM_302B);
   update_gas_sensor_value(voc_sensor, GM_502B);
   update_gas_sensor_value(co_sensor, GM_702B);
+}
+
+bool GroveMultiGasV2Component::enable_preheating() {
+  return send_command(WARMING_UP);
+}
+
+bool GroveMultiGasV2Component::send_command(uint8_t i2c_command) {
+  return write_bytes(i2c_command, nullptr, 0);
 }
 
 void GroveMultiGasV2Component::update_gas_sensor_value(sensor::Sensor* gas_sensor, uint8_t i2c_register) {
@@ -64,12 +77,6 @@ void GroveMultiGasV2Component::update_gas_sensor_value(sensor::Sensor* gas_senso
   }
 }
 
-bool GroveMultiGasV2Component::write_byte(uint8_t byte) {
-  bool ok = write_bytes(byte, nullptr, 0);
-  has_error = !ok;
-  return ok;
-}
-
 bool GroveMultiGasV2Component::read_value32(uint8_t i2c_register, uint32_t& value) {
   value = 0;
 
@@ -83,11 +90,6 @@ bool GroveMultiGasV2Component::read_value32(uint8_t i2c_register, uint32_t& valu
     value += buffer[i] << (8 * i);
   }
   return true;
-}
-
-bool GroveMultiGasV2Component::enable_preheating() {
-  preheated = write_byte(WARMING_UP);
-  return preheated;
 }
 
 }  // namespace grove_multigas_v2

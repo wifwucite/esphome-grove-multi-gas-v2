@@ -20,15 +20,12 @@ public:
   void update() override;
 
 private:
-  bool write_byte(uint8_t byte);
   bool enable_preheating();
-  bool read_value32(uint8_t i2c_register, uint32_t& value);
+  bool send_command(uint8_t i2c_command);
   void update_gas_sensor_value(sensor::Sensor* gas_sensor, uint8_t i2c_register);
+  bool read_value32(uint8_t i2c_register, uint32_t& value);
 
 private:
-  bool has_error{false};
-  bool preheated{false};
-
   sensor::Sensor* no2_sensor{nullptr};
   sensor::Sensor* c2h5oh_sensor{nullptr};
   sensor::Sensor* voc_sensor{nullptr};
