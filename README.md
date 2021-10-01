@@ -2,9 +2,9 @@ This component provides a sensor component for [ESPHome](https://esphome.io) for
 
 ## Installation
 
-In order to connect the Grove multi gas sensor to an ESP32 I recommend [this cable](https://www.seeedstudio.com/Grove-4-pin-Female-Jumper-to-Grove-4-pin-Conversion-Cable-5-PCs-per-PAck.html). You connect the black cable to ground, the red cable to 3.3V, the yellow cable to pin 25, and the white cable to pin 26. 
+In order to connect the Grove multi gas sensor to an ESP32 I recommend [this cable](https://www.seeedstudio.com/Grove-4-pin-Female-Jumper-to-Grove-4-pin-Conversion-Cable-5-PCs-per-PAck.html). You connect the black female jumper to ground, the red one to 3.3V, the yellow one to pin 25, and the white one to pin 26. Then you plug the gove connector into the sensor.
 
-To configure the sensor for ESPHome you do need to download or copy anything manually, you can just use refer to this external component from the yaml file like this:
+To configure the sensor for ESPHome you do not need to download or copy anything manually, you can just use refer to this external component from the yaml file like this:
 
 ```yaml
 external_components:
