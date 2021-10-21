@@ -81,7 +81,7 @@ bool GroveMultiGasV2Component::read_value32(uint8_t i2c_register, uint32_t& valu
   value = 0;
 
   uint8_t buffer[4];
-  bool ok = read_bytes(i2c_register, buffer, 4, 1);
+  bool ok = read_register(i2c_register, buffer, sizeof(buffer)) == i2c::ErrorCode::ERROR_OK;
   if (!ok) {
     return false;
   }
