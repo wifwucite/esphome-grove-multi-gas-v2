@@ -68,10 +68,15 @@ void GroveMultiGasV2Component::update_gas_sensor_value(sensor::Sensor* gas_senso
   }
 
   ESP_LOGV(TAG, "Reading %s gas sensor", gas_sensor->get_name().c_str());
-  uint32_t ppm;
-  bool ok = read_value32(i2c_register, ppm);
+  uint32_t adc_value;
+  bool ok = read_value32(i2c_register, adc_value);
   if (ok) {
-    gas_sensor->publish_state(ppm);
+    if (this->publish_raw_values) {
+      gas_sensor->publish_state(adc_value);
+    } else {
+      float ppm = (adc_value * 3.3) / GM_RESOLUTION;
+      gas_sensor->publish_state(ppm);
+    }
   } else {
     gas_sensor->publish_state(NAN);
   }

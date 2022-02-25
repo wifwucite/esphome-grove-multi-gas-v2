@@ -1,4 +1,4 @@
-This component provides a sensor component for [ESPHome](https://esphome.io) for the [Grove multichannel gas sensor V2](https://wiki.seeedstudio.com/Grove-Multichannel-Gas-Sensor-V2/). It has the ability to detect a variety of gases: Carbon monoxide (CO), Nitrogen dioxide (NO2), Ethyl alcohol(C2H5CH), Volatile Organic Compounds (VOC). According to the specifications it is rather a qualitive than a quantitive sensor. But this is enough for fun projects like building an [artificial nose](https://blog.benjamin-cabe.com/2021/08/03/how-i-built-a-connected-artificial-nose).
+This component provides a sensor component for [ESPHome](https://esphome.io) for the [Grove multichannel gas sensor V2](https://wiki.seeedstudio.com/Grove-Multichannel-Gas-Sensor-V2/). It has the ability to detect a variety of gases: Carbon monoxide (CO), Nitrogen dioxide (NO2), Ethyl alcohol(C2H5CH), Volatile Organic Compounds (VOC). According to the specifications it is rather a qualitive than a quantitive sensor. But this is enough for fun projects like building an [artificial nose](https://blog.benjamin-cabe.com/2021/08/03/how-i-built-a-connected-artificial-nose). If you are interested in qualitative measurements, you may want to enable the `raw_values` option, which will publish raw sensor readings instead of converted ppm values.
 
 ## Installation
 
@@ -16,6 +16,7 @@ i2c:
 
 sensor:
   - platform: grove_multigas_v2
+    # raw_values: true # raw adc values instead of ppm values
     NO2:
       name: "NO2"
     C2H5OH:
